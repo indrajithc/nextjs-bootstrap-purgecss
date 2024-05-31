@@ -1,25 +1,29 @@
 module.exports = {
-  "plugins": [
+  plugins: [
+    "postcss-nested",
+    "postcss-import",
     "postcss-flexbugs-fixes",
     [
       "postcss-preset-env",
       {
-        "autoprefixer": {
-          "flexbox": "no-2009"
+        autoprefixer: {
+          flexbox: "no-2009",
         },
-        "stage": 3,
-        "features": {
-          "custom-properties": false
-        }
-      }
+        stage: 3,
+        features: {
+          "custom-properties": false,
+        },
+      },
     ],
     [
-      '@fullhuman/postcss-purgecss',
-      {
-        content: ["./src/**/*.{js,jsx,ts,tsx}", "./next/**/*.{js,jsx,ts,tsx}"],
-        defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
-        safelist: ["html", "body"]
-      }
+      "@fullhuman/postcss-purgecss",
+      process.env.NODE_ENV === "production"
+        ? {
+            content: ["./src/**/*.{js,jsx,ts,tsx}", "./next/**/*.{js,jsx,ts,tsx}"],
+            defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
+            safelist: ["html", "body", "img"],
+          }
+        : false,
     ],
-  ]
-}
+  ],
+};
